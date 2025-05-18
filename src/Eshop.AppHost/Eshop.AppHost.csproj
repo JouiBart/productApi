@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Eshop.ServiceDefaults\Eshop.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Product.API\Product.API.csproj" />
     <ProjectReference Include="..\Product.MigrationService\Product.MigrationService.csproj" />
   </ItemGroup>

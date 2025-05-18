@@ -11,10 +11,10 @@ namespace Product.API.Controllers
     {
 
         private readonly ILogger _logger;
-        private readonly IProductService _productService;
+        private readonly IProductCacheService _productService;
 
         public ProductController(
-        ILogger<ProductController> logger, IProductService productService)
+        ILogger<ProductController> logger, IProductCacheService productService)
         {
             _logger = logger;
             _productService = productService;

@@ -1,6 +1,10 @@
-﻿using Product.Domain.Interfaces;
+﻿using Google.Protobuf.WellKnownTypes;
+using Microsoft.Extensions.Caching.Distributed;
+using Product.Domain.Interfaces;
 using Product.Domain.Models;
 using Product.Infrastructure.Repositories;
+using StackExchange.Redis;
+using System.Text.Json;
 
 namespace Product.API.Services
 {
@@ -14,7 +18,7 @@ namespace Product.API.Services
         }
 
         public async Task<IEnumerable<Product.Domain.Models.Product>> GetAllProducts()
-        {
+        {   
             var products = await _productRepository.GetAllProducts();
 
             return products.Select(x => new Product.Domain.Models.Product
@@ -31,7 +35,7 @@ namespace Product.API.Services
 
         public async Task<Product.Domain.Models.Product?> GetProduct(int id)
         {
-            var product = await _productRepository.GetProduct(id);
+            var product = await _productRepository.GetProduct(id);;
 
             return product == null ? null : new Product.Domain.Models.Product
             {
