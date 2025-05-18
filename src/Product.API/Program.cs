@@ -1,6 +1,8 @@
-using Microsoft.Extensions.Hosting;
+using Product.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSqlServerDbContext<ProductContext>("ProductApi");
 
 builder.AddServiceDefaults();
 
@@ -10,7 +12,11 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddScoped<Product.Domain.Interfaces.IProductService, Product.API.Services.ProductService>();
+builder.Services.AddScoped<Product.Infrastructure.Repositories.IProductRepository, Product.Infrastructure.Repositories.ProductRepository>();
+
 var app = builder.Build();
+
 
 app.MapDefaultEndpoints();
 
