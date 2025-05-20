@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Product.Domain.Interfaces;
 using Product.Domain.Models;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace Product.API.Services
@@ -10,6 +11,7 @@ namespace Product.API.Services
         private readonly IProductService _productService;
         private readonly IDistributedCache _cache;
         private readonly IConfiguration _configuration;
+        private readonly JsonSerializerOptions options;
 
         public ProductCacheService(IProductService productService, IDistributedCache cache, IConfiguration configuration)
         {
@@ -26,7 +28,7 @@ namespace Product.API.Services
 
         public async Task<Product.Domain.Models.Product?> GetProduct(int id)
         {
-            string cacheKey = $"{Eshop.ServiceDefaults.Constants.CACHE_PRODUCTS}_{id}";
+            string cacheKey = $"{Eshop.ServiceDefaults.Constants.CACHE_PRODUCTS}{id}";
 
             var cachedItem = await _cache.GetStringAsync(cacheKey);
 
@@ -81,7 +83,7 @@ namespace Product.API.Services
         {
             await _cache.SetStringAsync(
             cacheKey,
-            JsonSerializer.Serialize(value),
+            value,
             new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(int.Parse(_configuration["CacheExpireInMinutes"])) }
             );
 

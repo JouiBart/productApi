@@ -18,10 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Eshop.ServiceDefaults\Eshop.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\..\scr\Product.Domain\Product.Domain.csproj" />
-    <ProjectReference Include="..\..\scr\Product.Infrastructure\Product.Infrastructure.csproj" />
     <ProjectReference Include="..\Eshop.ServiceDefaults\Eshop.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Product.Domain\Product.Domain.csproj" />
+    <ProjectReference Include="..\Product.Infrastructure\Product.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
