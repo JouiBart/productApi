@@ -41,7 +41,7 @@ namespace Product.Infrastructure.Repositories
         public async Task<bool> UpdateStockAsync(int productId, int newStock)
         {
             var product = await _productContext.PRO_Products.FindAsync(productId);
-            product.QuatityStock = newStock;
+            product.QuatityStock += newStock;
 
             await _productContext.SaveChangesAsync();
 
