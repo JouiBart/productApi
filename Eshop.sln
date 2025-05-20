@@ -14,11 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8BE7F074
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.API", "src\Product.API\Product.API.csproj", "{37D90D4B-5DC5-4B06-B6E8-53030AD4DBD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.Infrastructure", "scr\Product.Infrastructure\Product.Infrastructure.csproj", "{97659F3F-B84E-4136-B76E-B995D83F0B21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.Infrastructure", "src\Product.Infrastructure\Product.Infrastructure.csproj", "{97659F3F-B84E-4136-B76E-B995D83F0B21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.MigrationService", "src\Product.MigrationService\Product.MigrationService.csproj", "{2EF15506-8492-E3ED-677D-65729F7EEEA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.Domain", "scr\Product.Domain\Product.Domain.csproj", "{0410D8CD-609F-4590-8C59-2E23EF178792}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.Domain", "src\Product.Domain\Product.Domain.csproj", "{0410D8CD-609F-4590-8C59-2E23EF178792}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
