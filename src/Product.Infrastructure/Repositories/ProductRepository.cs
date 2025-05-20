@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Product.Domain.Models;
 using Product.Infrastructure.Models;
 
 namespace Product.Infrastructure.Repositories
@@ -38,10 +39,10 @@ namespace Product.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<int> UpdateStockAsync(int productId, int newStock)
+        public async Task<int> UpdateStock(UpdateStock updateStock)
         {
-            var product = await _productContext.PRO_Products.FindAsync(productId);
-            product.QuatityStock += newStock;
+            var product = await _productContext.PRO_Products.FindAsync(updateStock.ProductId);
+            product.QuatityStock += updateStock.StockChange;
 
             await _productContext.SaveChangesAsync();
 

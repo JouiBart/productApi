@@ -56,14 +56,14 @@ namespace Product.API.Services
             return true;
         }
 
-        public async Task<int> UpdateStockAsync(int productId, int newStock)
+        public async Task<int> UpdateStock(UpdateStock updateStock)
         {
-            int stock = await _productService.UpdateStockAsync(productId, newStock);
+            int stock = await _productService.UpdateStock(updateStock);
 
             /// if was changed in database, then update cache
             if (stock >=0 )
             {
-                string cacheKey = $"{Eshop.ServiceDefaults.Constants.CACHE_PRODUCTS}{productId}";
+                string cacheKey = $"{Eshop.ServiceDefaults.Constants.CACHE_PRODUCTS}{updateStock.ProductId}";
                 var cachedItem = await _cache.GetStringAsync(cacheKey);
                 if (cachedItem != null)
                 {

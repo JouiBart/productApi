@@ -7,7 +7,7 @@ namespace Product.Domain.Interfaces
         Task<bool> CreateProduct(CreateProduct product);
         Task<IEnumerable<Domain.Models.Product>> GetAllProducts();
         Task<Domain.Models.Product?> GetProduct(int id);
-        Task<int> UpdateStockAsync(int productId, int newStock);
+        Task<int> UpdateStock(UpdateStock updateStock);
 
         Task<bool> ProductExistById(int id);
 

@@ -111,16 +111,19 @@ namespace Product.API.Controllers
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateStockExample1_Response))]
         [SwaggerResponseExample((int)HttpStatusCode.BadRequest, typeof(BadRequestErrorExample))]
         //[SwaggerRequestExample(typeof(CreateProduct), typeof(CreateProductExample1_Request))]
-        public async Task<IActionResult> UpdateStockAsync(int productId, int newStock)
+        public async Task<IActionResult> UpdateStock(UpdateStock updateStock)
         {
-            if (productId < 0)
+            if (updateStock == null)
+                return BadRequest("Object cannot be null");
+
+            if (updateStock.ProductId < 0)
                 return BadRequest("Product id cannot be lower than 0");
 
 
-            if (!await _productService.ProductExistById(productId))
+            if (!await _productService.ProductExistById(updateStock.ProductId))
                 return BadRequest("Product not found");
 
-            int stock = await _productService.UpdateStockAsync(productId, newStock);
+            int stock = await _productService.UpdateStock(updateStock);
 
             if (stock < 0)
                 return BadRequest("It is not possible order this product, becase is not in warehouse");
