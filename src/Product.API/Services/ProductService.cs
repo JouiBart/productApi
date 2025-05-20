@@ -1,10 +1,6 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Microsoft.Extensions.Caching.Distributed;
-using Product.Domain.Interfaces;
+﻿using Product.Domain.Interfaces;
 using Product.Domain.Models;
 using Product.Infrastructure.Repositories;
-using StackExchange.Redis;
-using System.Text.Json;
 
 namespace Product.API.Services
 {

@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.2.1" />
     <PackageReference Include="Aspire.StackExchange.Redis" Version="9.2.1" />
     <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.2.1" />

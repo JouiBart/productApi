@@ -15,14 +15,14 @@ namespace Product.API.Controllers
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/products")]
     [ApiController]
-    [ApiVersion(1)]
-    public class ProductController : ControllerBase
+    [ApiVersion(2)]
+    public class ProductController_v2 : ControllerBase
     {
 
         private readonly ILogger _logger;
         private readonly IProductCacheService _productService;
 
-        public ProductController(
+        public ProductController_v2(
         ILogger<ProductController> logger, IProductCacheService productService)
         {
             _logger = logger;

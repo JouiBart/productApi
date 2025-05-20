@@ -1,8 +1,4 @@
-using Microsoft.OpenApi.Models;
 using Product.API.Extensions;
-using Product.Infrastructure;
-using Swashbuckle.AspNetCore.Filters;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 
 builder.AddApplicationServices();
-builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 
 var app = builder.Build();
-
 
 
 app.MapDefaultEndpoints();
@@ -35,8 +29,18 @@ if (app.Environment.IsDevelopment())
 
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        var descriptions = app.DescribeApiVersions();
+
+        // build a swagger endpoint for each discovered API version
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = description.GroupName.ToUpperInvariant();
+            options.SwaggerEndpoint(url, name);
+        }
+
         options.RoutePrefix = string.Empty;
+        options.DocumentTitle = "Product API";
     });
 
 }
