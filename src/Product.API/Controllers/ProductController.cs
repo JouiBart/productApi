@@ -21,13 +21,23 @@ namespace Product.API.Controllers
         }
 
 
-        
+
+        /// <summary>
+        /// Get all products.
+        /// </summary>
+        /// <response code="200">List of all products</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product.Domain.Models.Product>>> GetAllProducts()
         {
             return Ok(await _productService.GetAllProducts());
         }
 
+        /// <summary>
+        /// Get product by id.
+        /// </summary>
+        /// <param name="id">id of product</param>
+        /// <response code="200">Single product</response>
+        /// <response code="404">Product not exist</response>
         [HttpGet]
         public async Task<ActionResult<Product.Domain.Models.Product>> GetProduct(int id)
         {
@@ -40,11 +50,17 @@ namespace Product.API.Controllers
         }
 
 
+        /// <summary>
+        /// Create new product.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <response code="200">Product was created</response>
+        /// <response code="400">Product was not created because of bad parameters or because the product is already exist</response>
         [HttpPut]
         public async Task<IActionResult> CreateProduct(CreateProduct product)
         {
             if (product == null)
-                return BadRequest();
+                return BadRequest("Product cannot be null");
 
 
             if (await _productService.ProductExistByProductCode(product.ProductCode))
@@ -56,13 +72,19 @@ namespace Product.API.Controllers
         }
 
 
+        /// <summary>
+        /// Update product stock.
+        /// </summary>
+        /// <param name="productId">Product id</param>
+        /// <param name="newStock">How many pieces of product was stocked or remove from warehouse
+        /// eg. -1 means that 1 piece was sold
+        /// eg. 1 means that 1 piece was stocked
+        /// </param>
+        /// <response code="200">Stock was updated</response>
+        /// <response code="400">If product not found</response>
         [HttpPost]
         public async Task<IActionResult> UpdateStockAsync(int productId, int newStock)
         {
-
-            if (newStock <= 0)
-                return BadRequest("Stock cannot be lower than 0");
-
             if (productId < 0)
                 return BadRequest("Product id cannot be lower than 0");
 
