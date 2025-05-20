@@ -1,6 +1,8 @@
 using Microsoft.OpenApi.Models;
 using Product.API.Extensions;
 using Product.Infrastructure;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +18,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 
 
+
 builder.AddApplicationServices();
+builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 
 var app = builder.Build();
+
 
 
 app.MapDefaultEndpoints();
@@ -26,7 +31,6 @@ app.MapDefaultEndpoints();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
     app.UseSwagger();
 
     app.UseSwaggerUI(options =>

@@ -1,6 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Product.API.Examples;
+using Product.API.Examples.CreateProduct;
+using Product.API.Examples.GetAllProducts;
+using Product.API.Examples.GetProduct;
+using Product.API.Examples.UpdateStock;
 using Product.Domain.Interfaces;
 using Product.Domain.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Net;
 
 namespace Product.API.Controllers
 {
@@ -27,6 +34,9 @@ namespace Product.API.Controllers
         /// </summary>
         /// <response code="200">List of all products</response>
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllProductsExample1_Response))]
         public async Task<ActionResult<IEnumerable<Product.Domain.Models.Product>>> GetAllProducts()
         {
             return Ok(await _productService.GetAllProducts());
@@ -39,13 +49,18 @@ namespace Product.API.Controllers
         /// <response code="200">Single product</response>
         /// <response code="404">Product not exist</response>
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetProductExample1_Response))]
+        [SwaggerResponseExample((int)HttpStatusCode.NotFound, typeof(NotFoundErrorExample))]
         public async Task<ActionResult<Product.Domain.Models.Product>> GetProduct(int id)
         {
             Product.Domain.Models.Product? product = await _productService.GetProduct(id);
 
-            if(product == null)
+            if (product == null)
                 return NotFound();
-            
+
             return Ok(product);
         }
 
@@ -54,9 +69,16 @@ namespace Product.API.Controllers
         /// Create new product.
         /// </summary>
         /// <param name="product"></param>
-        /// <response code="200">Product was created</response>
+        /// <response code="201">Product was created</response>
         /// <response code="400">Product was not created because of bad parameters or because the product is already exist</response>
         [HttpPut]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(CreateProductExample1_Response))]
+        [SwaggerResponseExample((int)HttpStatusCode.BadRequest, typeof(BadRequestErrorExample))]
+        [SwaggerRequestExample(typeof(CreateProduct), typeof(CreateProductExample1_Request))]
+
         public async Task<IActionResult> CreateProduct(CreateProduct product)
         {
             if (product == null)
@@ -68,7 +90,7 @@ namespace Product.API.Controllers
 
             await _productService.CreateProduct(product);
 
-            return NoContent();
+            return Created();
         }
 
 
@@ -83,6 +105,12 @@ namespace Product.API.Controllers
         /// <response code="200">Stock was updated</response>
         /// <response code="400">If product not found or is not in warehouse</response>
         [HttpPost]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateStockExample1_Response))]
+        [SwaggerResponseExample((int)HttpStatusCode.BadRequest, typeof(BadRequestErrorExample))]
+        //[SwaggerRequestExample(typeof(CreateProduct), typeof(CreateProductExample1_Request))]
         public async Task<IActionResult> UpdateStockAsync(int productId, int newStock)
         {
             if (productId < 0)
@@ -94,7 +122,7 @@ namespace Product.API.Controllers
 
             int stock = await _productService.UpdateStockAsync(productId, newStock);
 
-            if(stock < 0)
+            if (stock < 0)
                 return BadRequest("It is not possible order this product, becase is not in warehouse");
 
             return Ok(null);

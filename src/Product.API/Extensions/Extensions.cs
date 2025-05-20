@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using Product.Infrastructure;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Product.API.Extensions;
 
@@ -11,6 +12,13 @@ public static class Extensions
         builder.AddSqlServerDbContext<ProductContext>(Eshop.ServiceDefaults.Constants.MSSQL_PRODUCTS);
         builder.AddRedisDistributedCache(connectionName: Eshop.ServiceDefaults.Constants.REDIS_SERVER);
         builder.AddKeyedRedisClient(name: Eshop.ServiceDefaults.Constants.REDIS_PRODUCTS);
+        #endregion
+
+        
+        #region Services
+        builder.Services.AddScoped<Product.Domain.Interfaces.IProductService, Product.API.Services.ProductService>();
+        builder.Services.AddScoped<Product.Infrastructure.Repositories.IProductRepository, Product.Infrastructure.Repositories.ProductRepository>();
+        builder.Services.AddScoped<Product.Domain.Interfaces.IProductCacheService, Product.API.Services.ProductCacheService>();
         #endregion
 
         #region Swagger
@@ -42,13 +50,9 @@ public static class Extensions
                 if (File.Exists(xmlFilePath))
                     options.IncludeXmlComments(xmlFilePath, includeControllerXmlComments: true);
             }
-        });
-        #endregion
 
-        #region Services
-        builder.Services.AddScoped<Product.Domain.Interfaces.IProductService, Product.API.Services.ProductService>();
-        builder.Services.AddScoped<Product.Infrastructure.Repositories.IProductRepository, Product.Infrastructure.Repositories.ProductRepository>();
-        builder.Services.AddScoped<Product.Domain.Interfaces.IProductCacheService, Product.API.Services.ProductCacheService>();
+            options.ExampleFilters();
+        });
         #endregion
 
     }
