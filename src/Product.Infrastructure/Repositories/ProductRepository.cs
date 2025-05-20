@@ -38,14 +38,14 @@ namespace Product.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> UpdateStockAsync(int productId, int newStock)
+        public async Task<int> UpdateStockAsync(int productId, int newStock)
         {
             var product = await _productContext.PRO_Products.FindAsync(productId);
             product.QuatityStock += newStock;
 
             await _productContext.SaveChangesAsync();
 
-            return true;
+            return product.QuatityStock;
         }
 
 

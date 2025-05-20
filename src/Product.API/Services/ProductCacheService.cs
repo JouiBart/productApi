@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Product.Domain.Interfaces;
 using Product.Domain.Models;
-using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace Product.API.Services
@@ -57,14 +56,29 @@ namespace Product.API.Services
             return true;
         }
 
-        public async Task<bool> UpdateStockAsync(int productId, int newStock)
+        public async Task<int> UpdateStockAsync(int productId, int newStock)
         {
-            return await _productService.UpdateStockAsync(productId, newStock);
+            int stock = await _productService.UpdateStockAsync(productId, newStock);
+
+            /// if was changed in database, then update cache
+            if (stock >=0 )
+            {
+                string cacheKey = $"{Eshop.ServiceDefaults.Constants.CACHE_PRODUCTS}{productId}";
+                var cachedItem = await _cache.GetStringAsync(cacheKey);
+                if (cachedItem != null)
+                {
+                    var product = JsonSerializer.Deserialize<Product.Domain.Models.Product>(cachedItem);
+                    product.QuatityStock = stock;
+                    await SetCache(cacheKey, JsonSerializer.Serialize(product));
+                }
+            }
+
+            return stock;
         }
 
         public async Task<bool> ProductExistById(int id)
         {
-            string cacheKey = $"{Eshop.ServiceDefaults.Constants.CACHE_PRODUCTS}_{id}";
+            string cacheKey = $"{Eshop.ServiceDefaults.Constants.CACHE_PRODUCTS}{id}";
 
             var cachedItem = await _cache.GetStringAsync(cacheKey);
 

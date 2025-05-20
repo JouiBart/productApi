@@ -81,7 +81,7 @@ namespace Product.API.Controllers
         /// eg. 1 means that 1 piece was stocked
         /// </param>
         /// <response code="200">Stock was updated</response>
-        /// <response code="400">If product not found</response>
+        /// <response code="400">If product not found or is not in warehouse</response>
         [HttpPost]
         public async Task<IActionResult> UpdateStockAsync(int productId, int newStock)
         {
@@ -92,7 +92,10 @@ namespace Product.API.Controllers
             if (!await _productService.ProductExistById(productId))
                 return BadRequest("Product not found");
 
-            await _productService.UpdateStockAsync(productId, newStock);
+            int stock = await _productService.UpdateStockAsync(productId, newStock);
+
+            if(stock < 0)
+                return BadRequest("It is not possible order this product, becase is not in warehouse");
 
             return Ok(null);
         }

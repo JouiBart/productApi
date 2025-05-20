@@ -1,5 +1,4 @@
-﻿using Product.Domain.Models;
-using Product.Infrastructure.Models;
+﻿using Product.Infrastructure.Models;
 
 namespace Product.Infrastructure.Repositories
 {
@@ -14,7 +13,7 @@ namespace Product.Infrastructure.Repositories
 
         Task<PRO_Product> GetProduct(int id);
 
-        Task<bool> UpdateStockAsync(int productId, int newStock);
+        Task<int> UpdateStockAsync(int productId, int newStock);
 
         Task<bool> ProductExistByProductCode(string productCode);
     }

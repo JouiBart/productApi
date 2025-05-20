@@ -63,7 +63,7 @@ namespace Product.API.Services
             return true;
         }
 
-        public async Task<bool> UpdateStockAsync(int productId, int newStock)
+        public async Task<int> UpdateStockAsync(int productId, int newStock)
         {
             return await _productRepository.UpdateStockAsync(productId, newStock);
         }
