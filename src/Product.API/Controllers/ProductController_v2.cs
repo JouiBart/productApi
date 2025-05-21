@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Eshop.ServiceDefaults.RabbitMQ;
 using Microsoft.AspNetCore.Mvc;
 using Product.API.Examples;
 using Product.API.Examples.CreateProduct;
@@ -8,8 +9,12 @@ using Product.API.Examples.UpdateStock;
 using Product.Domain.Enums;
 using Product.Domain.Interfaces.v2;
 using Product.Domain.Models;
+using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Filters;
+using System.Data.Common;
 using System.Net;
+using System.Text.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Product.API.Controllers
 {
@@ -22,12 +27,16 @@ namespace Product.API.Controllers
 
         private readonly ILogger _logger;
         private readonly IProductCacheService_v2 _productService;
+        private readonly IConnection _connection;
+
+
 
         public ProductController_v2(
-        ILogger<ProductController> logger, IProductCacheService_v2 productService)
+        ILogger<ProductController> logger, IProductCacheService_v2 productService, IConnection connection)
         {
             _logger = logger;
             _productService = productService;
+            _connection = connection;
         }
 
 
@@ -152,7 +161,7 @@ namespace Product.API.Controllers
 
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateStockExample1_Response))]
         [SwaggerResponseExample((int)HttpStatusCode.BadRequest, typeof(BadRequestErrorExample))]
-        [SwaggerRequestExample(typeof(CreateProduct), typeof(CreateProductExample1_Request))]
+        [SwaggerRequestExample(typeof(UpdateStock), typeof(UpdateStockExample1_Request))]
         public async Task<IActionResult> UpdateStock(UpdateStock updateStock)
         {
             if (updateStock == null)
@@ -165,10 +174,10 @@ namespace Product.API.Controllers
             if (!await _productService.ProductExistById(updateStock.ProductId))
                 return BadRequest("Product not found");
 
-            int stock = await _productService.UpdateStock(updateStock);
-
-            if (stock < 0)
-                return BadRequest("It is not possible order this product, becase is not in warehouse");
+            var queueName = ProductQueues.UpdateStock;
+            using var channel = _connection.CreateModel();
+            channel.QueueDeclare(queueName, exclusive: false, durable: true);
+            channel.BasicPublish(exchange: "", queueName, null, body: JsonSerializer.SerializeToUtf8Bytes(updateStock));
 
             return Ok(null);
         }

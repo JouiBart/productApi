@@ -6,9 +6,9 @@ namespace Product.API.Services.v1
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository_v2 _productRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IProductRepository_v2 productRepository)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }

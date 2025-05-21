@@ -8,11 +8,16 @@ var sql = builder.AddSqlServer("sql")
 
 var db = sql.AddDatabase("ProductApi");
 
+var rabbitmq = builder.AddRabbitMQ("product");
+
+
 builder.AddProject<Projects.Product_API>("product-api")
     .WithExternalHttpEndpoints()
     .WithReference(cache)
     .WithReference(db)
+    .WithReference(rabbitmq)
     .WaitFor(cache)
+    .WaitFor(rabbitmq)
     .WaitFor(db);
 
 

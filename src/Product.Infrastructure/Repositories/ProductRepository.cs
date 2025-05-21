@@ -54,5 +54,7 @@ namespace Product.Infrastructure.Repositories
         {
             return await _productContext.PRO_Products.AnyAsync(x => x.ProductCode == productCode);
         }
+
+        
     }
 }

@@ -1,19 +1,24 @@
-﻿using Product.Domain.Enums;
+﻿using Eshop.ServiceDefaults.RabbitMQ;
+using Product.Domain.Enums;
 using Product.Domain.Interfaces.v1;
 using Product.Domain.Interfaces.v2;
 using Product.Domain.Models;
 using Product.Infrastructure.Repositories;
 using Product.Infrastructure.Repositories.v2;
+using RabbitMQ.Client;
+using System.Text.Json;
 
 namespace Product.API.Services
 {
     public class ProductService_v2 : IProductService_v2
     {
         private readonly IProductRepository_v2 _productRepository_v2;
+        private readonly IConnection _connection;
 
-        public ProductService_v2(IProductRepository_v2 productRepository_v2)
+        public ProductService_v2(IProductRepository_v2 productRepository_v2, IConnection connection)
         {
             _productRepository_v2 = productRepository_v2;
+            _connection = connection;
         }
 
         public async Task<IEnumerable<Product.Domain.Models.Product>> GetAllProducts(int currentPage, int pageSize, ProductOrderEnum order)

@@ -64,20 +64,22 @@ namespace Product.Infrastructure.Repositories.v2
             return true;
         }
 
-        public async Task<int> UpdateStock(UpdateStock updateStock)
-        {
-            var product = await _productContext.PRO_Products.FindAsync(updateStock.ProductId);
-            product.QuatityStock += updateStock.StockChange;
-
-            await _productContext.SaveChangesAsync();
-
-            return product.QuatityStock;
-        }
-
-
         public async Task<bool> ProductExistByProductCode(string productCode)
         {
             return await _productContext.PRO_Products.AnyAsync(x => x.ProductCode == productCode);
+        }
+
+        public Task<int> UpdateStock(UpdateStock updateStock)
+        {
+            var product = _productContext.PRO_Products.Find(updateStock.ProductId);
+            product.QuatityStock += updateStock.StockChange;
+
+            if (product.QuatityStock < 0)
+                return Task.FromResult(product.QuatityStock);
+
+            _productContext.SaveChangesAsync();
+
+            return Task.FromResult(product.QuatityStock);
         }
     }
 }

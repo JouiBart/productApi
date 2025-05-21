@@ -133,7 +133,7 @@ namespace Product.API.Controllers
 
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateStockExample1_Response))]
         [SwaggerResponseExample((int)HttpStatusCode.BadRequest, typeof(BadRequestErrorExample))]
-        [SwaggerRequestExample(typeof(CreateProduct), typeof(CreateProductExample1_Request))]
+        [SwaggerRequestExample(typeof(UpdateStock), typeof(UpdateStockExample1_Request))]
         public async Task<IActionResult> UpdateStock(UpdateStock updateStock)
         {
             if (updateStock == null)

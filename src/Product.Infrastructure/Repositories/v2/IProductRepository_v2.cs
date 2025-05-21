@@ -15,8 +15,8 @@ namespace Product.Infrastructure.Repositories.v2
 
         Task<PRO_Product> GetProduct(int id);
 
-        Task<int> UpdateStock(UpdateStock updateStock);
-
         Task<bool> ProductExistByProductCode(string productCode);
+
+        Task<int> UpdateStock(UpdateStock updateStock);
     }
 }

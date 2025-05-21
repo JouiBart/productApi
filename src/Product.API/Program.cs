@@ -1,3 +1,4 @@
+using Product.API.BackgroudServices;
 using Product.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 
 builder.AddApplicationServices();
+
+
 
 var app = builder.Build();
 
