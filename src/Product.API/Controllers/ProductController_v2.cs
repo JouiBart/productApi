@@ -32,7 +32,7 @@ namespace Product.API.Controllers
 
 
         public ProductController_v2(
-        ILogger<ProductController> logger, IProductCacheService_v2 productService, IConnection connection)
+        ILogger<ProductController_v2> logger, IProductCacheService_v2 productService, IConnection connection)
         {
             _logger = logger;
             _productService = productService;
@@ -130,7 +130,7 @@ namespace Product.API.Controllers
                 return BadRequest("Product cannot be null");
 
 
-            if (await _productService.ProductExistByProductCode(product.ProductCode))
+            if (!string.IsNullOrEmpty(product.ProductCode) && await _productService.ProductExistByProductCode(product.ProductCode))
                 return BadRequest("Product with this product code already exists.");
 
             await _productService.CreateProduct(product);
@@ -177,7 +177,7 @@ namespace Product.API.Controllers
             var queueName = ProductQueues.UpdateStock;
             using var channel = _connection.CreateModel();
             channel.QueueDeclare(queueName, exclusive: false, durable: true);
-            channel.BasicPublish(exchange: "", queueName, null, body: JsonSerializer.SerializeToUtf8Bytes(updateStock));
+            channel.BasicPublish("", queueName, false, null, JsonSerializer.SerializeToUtf8Bytes(updateStock));
 
             return Ok(null);
         }

@@ -102,7 +102,7 @@ namespace Product.API.Controllers
                 return BadRequest("Product cannot be null");
 
 
-            if (await _productService.ProductExistByProductCode(product.ProductCode))
+            if (!string.IsNullOrEmpty(product.ProductCode) && await _productService.ProductExistByProductCode(product.ProductCode))
                 return BadRequest("Product with this product code already exists.");
 
             await _productService.CreateProduct(product);

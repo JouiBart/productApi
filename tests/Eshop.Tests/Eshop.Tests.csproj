@@ -19,7 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eshop.AppHost\Eshop.AppHost.csproj" />
+    <ProjectReference Include="..\..\src\Eshop.AppHost\Eshop.AppHost.csproj" />
+    <ProjectReference Include="..\..\src\Eshop.ServiceDefaults\Eshop.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\src\Product.API\Product.API.csproj" />
+    <ProjectReference Include="..\..\src\Product.Domain\Product.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Product.Infrastructure\Product.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Product.MigrationService\Product.MigrationService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
