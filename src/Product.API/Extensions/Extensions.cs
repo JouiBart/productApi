@@ -65,8 +65,9 @@ public static class Extensions
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Version = "v1",
-                Title = "Product API",
-                Description = "API for maintaining products",
+                Title = "Product API v1",
+                Description = "API for maintaining products" +
+                "<h1>This API is depricated and support ends 5.21.2025, plese migrate to API v2</h1>",
                 TermsOfService = new Uri("https://example.com/terms"),
                 Contact = new OpenApiContact
                 {
@@ -83,8 +84,15 @@ public static class Extensions
             options.SwaggerDoc("v2", new OpenApiInfo
             {
                 Version = "v2",
-                Title = "Product API",
-                Description = "API for maintaining products",
+                Title = "Product API v2",
+                Description = "API for maintaining products" +
+                "<h1>What's new</h1>\r\n\r\n" +
+                "<p>\r\n\t" +
+                "<h2>Getproducts</h2>" +
+                "- Added Pagination - default set is 10 products and maximum is 100 <br>" +
+                "- Added Ordering - default value is 'ProdAsc' - product by name ascending" +
+                "<table>\r\n  <tr>\r\n    <th>Type</th>\r\n    <th>Descrition</th>\r\n  </tr>\r\n  <tr>\r\n    <td>ProdAsc</td>\r\n    <td>product by name ascending</td>\r\n  </tr>\r\n  <tr>\r\n    <td>ProdDesc</td>\r\n    <td>product by name descending</td>\r\n  </tr>\r\n  <tr>\r\n    <td>PriceAsc</td>\r\n    <td>product by price ascending</td>\r\n  </tr>\r\n  <tr>\r\n    <td>PriceDesc</td>\r\n    <td>product by price descending</td>\r\n  </tr>\r\n</table>" +
+                "\r\n</p>",
                 TermsOfService = new Uri("https://example.com/terms"),
                 Contact = new OpenApiContact
                 {

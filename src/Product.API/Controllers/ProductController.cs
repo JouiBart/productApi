@@ -16,6 +16,7 @@ namespace Product.API.Controllers
     [Route("api/v{version:apiVersion}/products")]
     [ApiController]
     [ApiVersion(1)]
+    [Obsolete("This controller is deprecated, please use API v2 instead.")]
     public class ProductController : ControllerBase
     {
 
