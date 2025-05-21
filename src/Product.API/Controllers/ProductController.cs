@@ -36,13 +36,18 @@ namespace Product.API.Controllers
         /// </summary>
         /// <response code="200">List of all products</response>
         [Microsoft.AspNetCore.Mvc.HttpGet(nameof(GetAllProducts))]   
+
         [Produces("application/json")]
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllProductsExample1_Response))]
         public async Task<ActionResult<IEnumerable<Product.Domain.Models.Product>>> GetAllProducts()
         {
             return Ok(await _productService.GetAllProducts());
         }
+
+
+
 
 
         /// <summary>
@@ -52,9 +57,12 @@ namespace Product.API.Controllers
         /// <response code="200">Single product</response>
         /// <response code="404">Product not exist</response>
         [Microsoft.AspNetCore.Mvc.HttpGet(nameof(GetProduct))]
+
         [Produces("application/json")]
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetProductExample1_Response))]
         [SwaggerResponseExample((int)HttpStatusCode.NotFound, typeof(NotFoundErrorExample))]
         public async Task<ActionResult<Product.Domain.Models.Product>> GetProduct(int id)
@@ -68,6 +76,9 @@ namespace Product.API.Controllers
         }
 
 
+
+
+
         /// <summary>
         /// Create new product.
         /// </summary>
@@ -75,9 +86,12 @@ namespace Product.API.Controllers
         /// <response code="201">Product was created</response>
         /// <response code="400">Product was not created because of bad parameters or because the product is already exist</response>
         [HttpPut(nameof(CreateProduct))]
+
         [Produces("application/json")]
+
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(CreateProductExample1_Response))]
         [SwaggerResponseExample((int)HttpStatusCode.BadRequest, typeof(BadRequestErrorExample))]
         [SwaggerRequestExample(typeof(CreateProduct), typeof(CreateProductExample1_Request))]
@@ -97,6 +111,9 @@ namespace Product.API.Controllers
         }
 
 
+
+
+
         /// <summary>
         /// Update product stock.
         /// </summary>
@@ -108,9 +125,12 @@ namespace Product.API.Controllers
         /// <response code="200">Stock was updated</response>
         /// <response code="400">If product not found or is not in warehouse</response>
         [HttpPatch(nameof(UpdateStock))]
+
         [Produces("application/json")]
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateStockExample1_Response))]
         [SwaggerResponseExample((int)HttpStatusCode.BadRequest, typeof(BadRequestErrorExample))]
         [SwaggerRequestExample(typeof(CreateProduct), typeof(CreateProductExample1_Request))]
