@@ -115,7 +115,7 @@ namespace Products.Tests.Controllers
         [Fact]
         public async Task CreateProduct_ProductCodeExists_BadRequest()
         {
-            var createProduct = ProductMockupHelper.GetNewProduct();
+            var createProduct = CreateProductMock.GetCreateProductMock();
 
             _productServiceMock.Setup(s => s.ProductExistByProductCode(createProduct.ProductCode)).ReturnsAsync(true);
 
@@ -128,7 +128,7 @@ namespace Products.Tests.Controllers
         [Fact]
         public async Task CreateProduct_ValidProduct_Created()
         {
-            var createProduct = ProductMockupHelper.GetNewProduct();
+            var createProduct = CreateProductMock.GetCreateProductMock();
 
             _productServiceMock.Setup(s => s.ProductExistByProductCode(createProduct.ProductCode)).ReturnsAsync(false);
             _productServiceMock.Setup(s => s.CreateProduct(createProduct)).Returns(Task.FromResult(true));
@@ -141,8 +141,7 @@ namespace Products.Tests.Controllers
         [Fact]
         public async Task CreateProduct_ValidProduct_EmptyProductCode_Created()
         {
-            var createProduct = ProductMockupHelper.GetNewProduct();
-            createProduct.ProductName = null;
+            var createProduct = CreateProductMock.GetCreateProductMock_Base();
 
             _productServiceMock.Setup(s => s.ProductExistByProductCode(null)).ReturnsAsync(false);
             _productServiceMock.Setup(s => s.CreateProduct(createProduct)).Returns(Task.FromResult(true));

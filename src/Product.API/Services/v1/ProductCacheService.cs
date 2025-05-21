@@ -10,7 +10,6 @@ namespace Product.API.Services.v1
         private readonly IProductService _productService;
         private readonly IDistributedCache _cache;
         private readonly IConfiguration _configuration;
-        private readonly JsonSerializerOptions options;
 
         public ProductCacheService(IProductService productService, IDistributedCache cache, IConfiguration configuration)
         {

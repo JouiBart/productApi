@@ -75,7 +75,7 @@ namespace Products.Tests.Controllers
         [Fact]
         public async Task CreateProduct_ProductCodeExists_BadRequest()
         {
-            var createProduct = ProductMockupHelper.GetNewProduct();
+            var createProduct = CreateProductMock.GetCreateProductMock();
 
             _serviceMock.Setup(s => s.ProductExistByProductCode(createProduct.ProductCode)).ReturnsAsync(true);
 
@@ -85,11 +85,25 @@ namespace Products.Tests.Controllers
             Assert.Equal("Product with this product code already exists.", badRequest.Value);
         }
 
+
         [Fact]
         public async Task CreateProduct_ValidProduct_EmptyBarcode_Created()
         {
-            var createProduct = ProductMockupHelper.GetNewProduct();
+            var createProduct = CreateProductMock.GetCreateProductMock();
             createProduct.ProductCode = string.Empty;
+
+            _serviceMock.Setup(s => s.ProductExistByProductCode("")).ReturnsAsync(true);
+            _serviceMock.Setup(s => s.CreateProduct(createProduct)).Returns(Task.FromResult(true));
+
+            var result = await _controller.CreateProduct(createProduct);
+
+            Assert.IsType<CreatedResult>(result);
+        }
+
+        [Fact]
+        public async Task CreateProduct_ValidProduct_EmptyBarcode2_Created()
+        {
+            var createProduct = CreateProductMock.GetCreateProductMock_Base();
 
             _serviceMock.Setup(s => s.ProductExistByProductCode("")).ReturnsAsync(true);
             _serviceMock.Setup(s => s.CreateProduct(createProduct)).Returns(Task.FromResult(true));
@@ -102,7 +116,7 @@ namespace Products.Tests.Controllers
         [Fact]
         public async Task CreateProduct_ValidProduct_Created()
         {
-            var createProduct = ProductMockupHelper.GetNewProduct();
+            var createProduct = CreateProductMock.GetCreateProductMock();
 
             _serviceMock.Setup(s => s.ProductExistByProductCode(createProduct.ProductCode)).ReturnsAsync(false);
             _serviceMock.Setup(s => s.CreateProduct(createProduct)).Returns(Task.FromResult(true));

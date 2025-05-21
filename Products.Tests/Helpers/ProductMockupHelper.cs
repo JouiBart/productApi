@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-
-namespace Products.Tests.Helpers
+﻿namespace Products.Tests.Helpers
 {
     public static class ProductMockupHelper
     {
@@ -117,19 +110,6 @@ namespace Products.Tests.Helpers
             };
         }
 
-
-        public static Product.Domain.Models.CreateProduct GetNewProduct()
-        {
-            return new Product.Domain.Models.CreateProduct
-            {
-                ProductName = "Wireless Mouse",
-                ImageUrl = "https://example.com/images/wireless-mouse.jpg",
-                Price = 499.99m,
-                DescriptionOfProduct = "A comfortable wireless mouse with ergonomic design and long battery life.",
-                QuatityStock = 150,
-                ProductCode = "barcode"
-            };
-        }
     }
 }
     
