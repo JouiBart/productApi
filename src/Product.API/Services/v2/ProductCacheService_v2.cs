@@ -1,27 +1,29 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using Product.Domain.Interfaces;
+using Product.Domain.Enums;
+using Product.Domain.Interfaces.v1;
+using Product.Domain.Interfaces.v2;
 using Product.Domain.Models;
 using System.Text.Json;
 
 namespace Product.API.Services
 {
-    public class ProductCacheService : IProductCacheService
+    public class ProductCacheService_v2 : IProductCacheService_v2
     {
-        private readonly IProductService _productService;
+        private readonly IProductService_v2 _productService_v2;
         private readonly IDistributedCache _cache;
         private readonly IConfiguration _configuration;
         private readonly JsonSerializerOptions options;
 
-        public ProductCacheService(IProductService productService, IDistributedCache cache, IConfiguration configuration)
+        public ProductCacheService_v2(IProductService_v2 productService_v2, IDistributedCache cache, IConfiguration configuration)
         {
-            _productService = productService;
+            _productService_v2 = productService_v2;
             _cache = cache;
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<Product.Domain.Models.Product>> GetAllProducts()
+        public async Task<IEnumerable<Product.Domain.Models.Product>> GetAllProducts(int currentPage, int pageSize, ProductOrderEnum order)
         {
-            return await _productService.GetAllProducts();
+            return await _productService_v2.GetAllProducts(currentPage, pageSize, order);
         }
 
 
@@ -34,7 +36,7 @@ namespace Product.API.Services
             if (cachedItem != null)
                 return JsonSerializer.Deserialize<Product.Domain.Models.Product>(cachedItem);
 
-            var product = await _productService.GetProduct(id);
+            var product = await _productService_v2.GetProduct(id);
 
             await SetCache(cacheKey, JsonSerializer.Serialize(product));
 
@@ -51,14 +53,14 @@ namespace Product.API.Services
         public async Task<bool> CreateProduct(CreateProduct product)
         {
 
-            await _productService.CreateProduct(product);
+            await _productService_v2.CreateProduct(product);
 
             return true;
         }
 
         public async Task<int> UpdateStock(UpdateStock updateStock)
         {
-            int stock = await _productService.UpdateStock(updateStock);
+            int stock = await _productService_v2.UpdateStock(updateStock);
 
             /// if was changed in database, then update cache
             if (stock >=0 )
@@ -85,12 +87,12 @@ namespace Product.API.Services
             if (cachedItem != null)
                 return true;
 
-            return await _productService.ProductExistById(id);
+            return await _productService_v2.ProductExistById(id);
         }
 
         public Task<bool> ProductExistByProductCode(string productCode)
         {
-            return _productService.ProductExistByProductCode(productCode);
+            return _productService_v2.ProductExistByProductCode(productCode);
         }
 
         private async Task<bool> SetCache(string cacheKey, string value)

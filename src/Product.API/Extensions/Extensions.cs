@@ -3,6 +3,8 @@ using Asp.Versioning.Conventions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
+using Product.API.Services.v1;
+using Product.Domain.Interfaces.v1;
 using Product.Infrastructure;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
@@ -21,9 +23,9 @@ public static class Extensions
 
         
         #region Services
-        builder.Services.AddScoped<Product.Domain.Interfaces.IProductService, Product.API.Services.ProductService>();
-        builder.Services.AddScoped<Product.Infrastructure.Repositories.IProductRepository, Product.Infrastructure.Repositories.ProductRepository>();
-        builder.Services.AddScoped<Product.Domain.Interfaces.IProductCacheService, Product.API.Services.ProductCacheService>();
+        builder.Services.AddScoped<IProductService, ProductService>();
+        builder.Services.AddScoped<Product.Infrastructure.Repositories.IProductRepository_v2, Product.Infrastructure.Repositories.ProductRepository_v2>();
+        builder.Services.AddScoped<IProductCacheService, ProductCacheService>();
         #endregion
 
         #region Versioning

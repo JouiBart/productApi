@@ -5,7 +5,7 @@ using Product.API.Examples.CreateProduct;
 using Product.API.Examples.GetAllProducts;
 using Product.API.Examples.GetProduct;
 using Product.API.Examples.UpdateStock;
-using Product.Domain.Interfaces;
+using Product.Domain.Interfaces.v1;
 using Product.Domain.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Net;

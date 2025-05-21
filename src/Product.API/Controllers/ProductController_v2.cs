@@ -5,7 +5,8 @@ using Product.API.Examples.CreateProduct;
 using Product.API.Examples.GetAllProducts;
 using Product.API.Examples.GetProduct;
 using Product.API.Examples.UpdateStock;
-using Product.Domain.Interfaces;
+using Product.Domain.Enums;
+using Product.Domain.Interfaces.v2;
 using Product.Domain.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Net;
@@ -20,10 +21,10 @@ namespace Product.API.Controllers
     {
 
         private readonly ILogger _logger;
-        private readonly IProductCacheService _productService;
+        private readonly IProductCacheService_v2 _productService;
 
         public ProductController_v2(
-        ILogger<ProductController> logger, IProductCacheService productService)
+        ILogger<ProductController> logger, IProductCacheService_v2 productService)
         {
             _logger = logger;
             _productService = productService;
@@ -32,8 +33,16 @@ namespace Product.API.Controllers
 
 
         /// <summary>
-        /// Get all products.
+        /// Get maximum of 100 products with pagination and order.
         /// </summary>
+        /// <param name="currentPage">Current page of the product list</param>
+        /// <param name="pageSize">How many products should be maximum send on one page (MAX 100!). Default page size is 10</param>
+        /// <param name="order">Order of the products in the list.  Can be: 
+        /// "prod_asc" "prod_desc" - order by product name
+        /// "price_asc" "price_desc" - order by product price
+        /// 
+        /// NOTE: Default order is "prod_asc"
+        /// </param>
         /// <response code="200">List of all products</response>
         [HttpGet(nameof(GetAllProducts))]   
 
@@ -42,9 +51,18 @@ namespace Product.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
 
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllProductsExample1_Response))]
-        public async Task<ActionResult<IEnumerable<Product.Domain.Models.Product>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<Product.Domain.Models.Product>>> GetAllProducts(int currentPage = 1, int pageSize = 10, ProductOrderEnum order = ProductOrderEnum.ProdAsc)
         {
-            return Ok(await _productService.GetAllProducts());
+            if (currentPage < 1)
+                return BadRequest("Current page cannot be lower than 1");
+
+            if (pageSize < 1)
+                return BadRequest("Page size cannot be lower than 1");
+
+            if (pageSize > 100)
+                return BadRequest("Page size cannot be higher than 100");
+
+            return Ok(await _productService.GetAllProducts(currentPage, pageSize, order));
         }
 
 
